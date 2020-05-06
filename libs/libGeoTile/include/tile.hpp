@@ -1,9 +1,10 @@
-#include <tuple>
+#ifndef LIBGEOTILE_TILE_HPP_
+#define LIBGEOTILE_TILE_HPP_
+
 #include "point.hpp"
 
-class Tile
+struct Tile
 {
-public:
     static Tile fromLatLon(double latitude, double longitude, int zoom);
     static Tile fromPixel(int pixelX, int pixelY, int zoom);
     static Tile fromMeters(double meterX, double meterY);
@@ -19,3 +20,6 @@ private:
     double tmsY_;
     int zoom_;
 };
+
+#endif
+

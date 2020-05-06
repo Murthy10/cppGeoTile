@@ -1,5 +1,5 @@
 #include <tuple>
-#include "point.h"
+#include "point.hpp"
 
 class Tile
 {

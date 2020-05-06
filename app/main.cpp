@@ -3,7 +3,7 @@
 #include <math.h>
 #include <tuple>
 
-#include <libGeoTile/point.h>
+#include <libGeoTile/point.hpp>
 
 int main()
 {

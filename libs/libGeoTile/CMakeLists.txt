@@ -1,6 +1,7 @@
 project(libGeoTile)
 
 add_library(${PROJECT_NAME} SHARED
+	meta.cpp
 	point.cpp
 	tile.cpp
 )

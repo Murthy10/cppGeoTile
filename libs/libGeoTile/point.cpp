@@ -1,8 +1,8 @@
 #include <math.h>
 #include <tuple>
 
-#include "point.h"
-#include "meta.h"
+#include "point.hpp"
+#include "meta.hpp"
 
 inline Point::Point(double latitude, double longitude) : latitude_(latitude), longitude_(longitude){};
 

@@ -7,8 +7,7 @@
 
 int main()
 {
-    auto point = Point::fromLatLon(47.0, 8.0)
-
+    auto point = Point::fromLatLon(47.0, 8.0);
     std::cout << point.getLatitude() << " ";
     std::cout << std::endl;
 }

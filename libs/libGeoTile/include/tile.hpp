@@ -5,19 +5,21 @@
 
 struct Tile
 {
-    static Tile fromLatLon(double latitude, double longitude, int zoom);
-    static Tile fromPixel(int pixelX, int pixelY, int zoom);
     static Tile fromMeters(double meterX, double meterY);
     static Tile fromTms(int tmsX, int tmsY, int zoom);
     static Tile fromGoogle(int googleX, int googleY, int zoom);
-    static Tile fromPoint(Point point, int zoom);
-    double getLatitude();
-    double getLongitude();
+    static Tile forLatLon(double latitude, double longitude, int zoom);
+    static Tile forPoint(Point point, int zoom);
+    static Tile forPixels(int pixelX, int pixelY, int zoom);
+    static Tile forMeters(double meterX, double meterY, int zoom);
+    std::tuple<int, int> getTms();
+    std::tuple<int, int> getGoogle();
+    int getZoom();
 
 private:
-    Tile(double latitude, double longitude, int zoom);
-    double tmsX_;
-    double tmsY_;
+    Tile(int tmsX, int tmsY, int zoom);
+    int tmsX_;
+    int tmsY_;
     int zoom_;
 };
 

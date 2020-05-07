@@ -20,9 +20,9 @@ Point Point::fromMeters(double meterX, double meterY)
     return Point(latitude, longitude);
 }
 
-Point Point::fromLatLon(double, double) {
-    // TODO: Implement
-    return Point { 0, 0 };
+Point Point::fromLatLon(double latitude, double longitude)
+{
+    return Point{latitude, longitude};
 }
 
 std::tuple<int, int> Point::signMeters(double meterX, double meterY, int pixelX, int pixelY, int zoom)
@@ -38,7 +38,7 @@ std::tuple<int, int> Point::signMeters(double meterX, double meterY, int pixelX,
     {
         meterY *= -1;
     }
-    return { meterX, meterY };
+    return {meterX, meterY};
 }
 
 double Point::getLatitude()
@@ -51,3 +51,20 @@ double Point::getLongitude()
     return longitude_;
 }
 
+std::tuple<double, double> Point::getMeters()
+{
+    auto meterX = longitude_ * ORIGIN_SHIFT / 180.0;
+    auto meterY = log(tan((90.0 + latitude_) * M_PI / 360.0)) / (M_PI / 180.0);
+    meterY = meterY * ORIGIN_SHIFT / 180.0;
+    return {meterX, meterY};
+}
+
+std::tuple<int, int> Point::getPixels(int zoom)
+{
+    auto meters = getMeters();
+    auto meterX = std::get<0>(meters);
+    auto meterY = std::get<1>(meters);
+    auto pixelX = (meterX + ORIGIN_SHIFT) / resolution(zoom);
+    auto pixelY = (meterY - ORIGIN_SHIFT) / resolution(zoom);
+    return {abs(round(pixelX)), abs(round(pixelY))};
+}

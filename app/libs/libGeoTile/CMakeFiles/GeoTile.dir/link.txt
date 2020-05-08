@@ -1,0 +1,1 @@
+/usr/bin/c++ -fPIC -g  -shared -Wl,-soname,libGeoTile.so -o libGeoTile.so CMakeFiles/GeoTile.dir/src/meta.cpp.o CMakeFiles/GeoTile.dir/src/point.cpp.o CMakeFiles/GeoTile.dir/src/tile.cpp.o 

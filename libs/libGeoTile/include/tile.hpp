@@ -8,12 +8,14 @@ struct Tile
     static Tile fromMeters(double meterX, double meterY);
     static Tile fromTms(int tmsX, int tmsY, int zoom);
     static Tile fromGoogle(int googleX, int googleY, int zoom);
+    static Tile fromQuadTree(std::string);
     static Tile forLatLon(double latitude, double longitude, int zoom);
     static Tile forPoint(Point point, int zoom);
     static Tile forPixels(int pixelX, int pixelY, int zoom);
     static Tile forMeters(double meterX, double meterY, int zoom);
     std::tuple<int, int> getTms();
     std::tuple<int, int> getGoogle();
+    std::string getQuadTree();
     int getZoom();
 
 private:

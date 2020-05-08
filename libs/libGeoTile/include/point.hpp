@@ -8,6 +8,7 @@ struct Point
     static Point fromLatLon(double latitude, double longitude);
     static Point fromPixel(int pixelX, int pixelY, int zoom);
     static Point fromMeters(double meterX, double meterY);
+    std::tuple<double, double> getLatLon();
     std::tuple<double, double> getMeters();
     std::tuple<int, int> getPixels(int zoom);
     double getLatitude();

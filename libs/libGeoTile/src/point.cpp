@@ -51,6 +51,11 @@ double Point::getLongitude()
     return longitude_;
 }
 
+std::tuple<double, double> Point::getLatLon()
+{
+    return {latitude_, longitude_};
+}
+
 std::tuple<double, double> Point::getMeters()
 {
     auto meterX = longitude_ * ORIGIN_SHIFT / 180.0;

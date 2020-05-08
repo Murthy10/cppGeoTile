@@ -1,9 +1,14 @@
 #include "point.hpp"
+#include "tile.hpp"
 
 #include <iostream>
 
 int main()
 {
-    auto point = Point::fromLatLon(47.0, 8.0);
-    std::cout << point.getLatitude() << "\n";
+    auto quadTree = "1202211";
+    auto tile = Tile::fromQuadTree(quadTree);
+    auto tms = tile.getTms();
+    std::cout << quadTree << "\n";
+    std::cout << std::get<0>(tms) << " " << std::get<1>(tms) << "\n";
+    std::cout << tile.getQuadTree() << "\n";
 }

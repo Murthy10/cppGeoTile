@@ -1,0 +1,24 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+../libs/libGeoTile/include/point.hpp
+tuple
+-
+
+../libs/libGeoTile/include/tile.hpp
+point.hpp
+../libs/libGeoTile/include/point.hpp
+
+/home/murthy/projects/cpp/cppGeoTile/app/main.cpp
+point.hpp
+/home/murthy/projects/cpp/cppGeoTile/app/point.hpp
+tile.hpp
+/home/murthy/projects/cpp/cppGeoTile/app/tile.hpp
+iostream
+-
+

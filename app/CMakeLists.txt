@@ -37,4 +37,3 @@ target_compile_options(
     -pedantic-errors
   >
 )
-

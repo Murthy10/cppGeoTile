@@ -122,3 +122,17 @@ int Tile::getZoom()
 {
     return zoom_;
 }
+
+std::tuple<Point, Point> Tile::bounds()
+{
+    auto google = getGoogle();
+    auto googleX = std::get<0>(google);
+    auto googleY = std::get<1>(google);
+    auto pixelXWest = googleX * TILE_SIZE;
+    auto pixelYNorth = googleY * TILE_SIZE;
+    auto pixelXEast = (googleX + 1) * TILE_SIZE;
+    auto pixelYSouth = (googleY + 1) * TILE_SIZE;
+    auto pointMin = Point::fromPixel(pixelXWest, pixelYSouth, zoom_);
+    auto pointMax = Point::fromPixel(pixelXEast, pixelYNorth, zoom_);
+    return {pointMin, pointMax};
+}

@@ -13,6 +13,7 @@ struct Tile
     static Tile forPoint(Point point, int zoom);
     static Tile forPixels(int pixelX, int pixelY, int zoom);
     static Tile forMeters(double meterX, double meterY, int zoom);
+    std::tuple<Point, Point> bounds();
     std::tuple<int, int> getTms();
     std::tuple<int, int> getGoogle();
     std::string getQuadTree();

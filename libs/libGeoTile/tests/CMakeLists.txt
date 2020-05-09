@@ -1,6 +1,7 @@
 add_executable(
     unit_tests
     point.cpp
+    tile.cpp
     )
 
 target_link_libraries(

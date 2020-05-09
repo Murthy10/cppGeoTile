@@ -44,7 +44,7 @@ Tile Tile::fromTms(int tmsX, int tmsY, int zoom)
 
 Tile Tile::fromGoogle(int googleX, int googleY, int zoom)
 {
-    int tmsY = pow(2, zoom - 1) - googleY;
+    int tmsY = pow(2, zoom) - 1 - googleY;
     return Tile::fromTms(googleX, tmsY, zoom);
 }
 
@@ -52,7 +52,7 @@ Tile Tile::forPixels(int pixelX, int pixelY, int zoom)
 {
     auto tmsX = static_cast<int>(ceil(pixelX / TILE_SIZE) - 1);
     auto tmsY = static_cast<int>(ceil(pixelY / TILE_SIZE) - 1);
-    tmsY = pow(2, zoom - 1) - tmsY;
+    tmsY = pow(2, zoom) - 1 - tmsY;
     return Tile::fromTms(tmsX, tmsY, zoom);
 }
 
@@ -86,7 +86,7 @@ std::tuple<int, int> Tile::getTms()
 
 std::tuple<int, int> Tile::getGoogle()
 {
-    auto googleY = pow(2, zoom_ - 1) - tmsY_;
+    auto googleY = pow(2, zoom_) - 1 - tmsY_;
     return {tmsX_, googleY};
 }
 
@@ -107,7 +107,7 @@ std::string Tile::getQuadTree()
         {
             digit += 2;
         }
-        if (digit == 3)
+        if (digit > 2)
         {
             digit %= 2;
         }
@@ -125,13 +125,14 @@ int Tile::getZoom()
 
 std::tuple<Point, Point> Tile::bounds()
 {
-    auto google = getGoogle();
-    auto googleX = std::get<0>(google);
-    auto googleY = std::get<1>(google);
+    auto [googleX, googleY] = getGoogle();
+
     auto pixelXWest = googleX * TILE_SIZE;
     auto pixelYNorth = googleY * TILE_SIZE;
+
     auto pixelXEast = (googleX + 1) * TILE_SIZE;
     auto pixelYSouth = (googleY + 1) * TILE_SIZE;
+
     auto pointMin = Point::fromPixel(pixelXWest, pixelYSouth, zoom_);
     auto pointMax = Point::fromPixel(pixelXEast, pixelYNorth, zoom_);
     return {pointMin, pointMax};

@@ -43,3 +43,11 @@ target_compile_options(
   >
 )
 
+include(cmake/googletest.cmake)
+fetch_googletest(
+    ${PROJECT_SOURCE_DIR}/cmake
+    ${PROJECT_BINARY_DIR}/googletest
+    )
+
+enable_testing()
+add_subdirectory(tests)

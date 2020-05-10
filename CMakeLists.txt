@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.12)
 project(GeoTile LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 17)
@@ -12,9 +12,7 @@ if (NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE "Debug")
 endif()
 
-if (NOT ENABLE_TESTING)
-  set(ENABLE_TESTING ON)
-endif()
+option(ENABLE_TESTING "Builds the GoogleTest test suite." ON)
 
 if ("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
   SET(CMAKE_INTERPROCEDURAL_OPTIMIZATION OFF)
@@ -60,13 +58,12 @@ target_compile_options(
 )
 
 if (ENABLE_TESTING)
-  include(cmake/googletest.cmake)
-  fetch_googletest(
-    ${PROJECT_SOURCE_DIR}/cmake
-    ${PROJECT_BINARY_DIR}/googletest
-  )
-  
   enable_testing()
+
+  add_subdirectory("tests/thirdparty/googletest")
+
+  set(BUILD_GMOCK OFF)
+  set(INSTALL_GTEST OFF)
 
   set(
     TEST_PROJECT_NAME
@@ -82,8 +79,9 @@ if (ENABLE_TESTING)
 
   target_link_libraries(
       "${TEST_PROJECT_NAME}"
+      PRIVATE
+      "${PROJECT_NAME}"
       "gtest"
-      "libs::GeoTile"
   )
 
   target_compile_options(
@@ -95,12 +93,5 @@ if (ENABLE_TESTING)
       -Werror
       -pedantic-errors
     >
-  )
-
-  add_test(
-    NAME
-      "unit"
-    COMMAND
-      "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_BINDIR}/unit_tests"
   )
 endif()

@@ -6,13 +6,13 @@
 struct Tile
 {
     static Tile fromMeters(double meterX, double meterY);
-    static Tile fromTms(int tmsX, int tmsY, int zoom);
-    static Tile fromGoogle(int googleX, int googleY, int zoom);
+    static Tile fromTms(int tmsX, int tmsY, unsigned int zoom);
+    static Tile fromGoogle(int googleX, int googleY, unsigned int zoom);
     static Tile fromQuadTree(std::string);
-    static Tile forLatLon(double latitude, double longitude, int zoom);
-    static Tile forPoint(Point point, int zoom);
-    static Tile forPixels(int pixelX, int pixelY, int zoom);
-    static Tile forMeters(double meterX, double meterY, int zoom);
+    static Tile forLatLon(double latitude, double longitude, unsigned int zoom);
+    static Tile forPoint(Point point, unsigned int zoom);
+    static Tile forPixels(int pixelX, int pixelY, unsigned int zoom);
+    static Tile forMeters(double meterX, double meterY, unsigned int zoom);
     std::tuple<Point, Point> bounds();
     std::tuple<int, int> getTms();
     std::tuple<int, int> getGoogle();
@@ -20,10 +20,10 @@ struct Tile
     int getZoom();
 
 private:
-    Tile(int tmsX, int tmsY, int zoom);
+    Tile(int tmsX, int tmsY, unsigned int zoom);
     int tmsX_;
     int tmsY_;
-    int zoom_;
+    unsigned int zoom_;
 };
 
 #endif

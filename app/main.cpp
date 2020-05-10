@@ -7,8 +7,8 @@ int main()
 {
     auto quadTree = "1202211";
     auto tile = Tile::fromQuadTree(quadTree);
-    auto tms = tile.getTms();
+    auto [tmsX, tmsY] = tile.getTms();
     std::cout << quadTree << "\n";
-    std::cout << std::get<0>(tms) << " " << std::get<1>(tms) << "\n";
+    std::cout << tmsX << " " << tmsY << "\n";
     std::cout << tile.getQuadTree() << "\n";
 }

@@ -30,7 +30,7 @@ target_link_libraries(
 target_compile_options(
   "${PROJECT_NAME}"
   PUBLIC
-  $<$<OR:$<CXX_COMPILER_ID:Clang>,$<CXX_COMPILER_ID:Gnu>>:
+  $<$<OR:$<CXX_COMPILER_ID:Clang>,$<CXX_COMPILER_ID:AppleClang>,$<CXX_COMPILER_ID:GNU>>:
     -Wall
     -Wextra
     -Werror

@@ -1,11 +1,13 @@
 #include "point.hpp"
 #include "meta.hpp"
 
+#include <cmath>
+
 Point::Point(double latitude, double longitude) : latitude_(latitude), longitude_(longitude){};
 
-Point Point::fromPixel(int pixelX, int pixelY, int zoom)
+Point Point::fromPixel(int pixelX, int pixelY, unsigned int zoom)
 {
-    auto maxPixel = std::pow(2, zoom) * TILE_SIZE;
+    // unused: auto maxPixel = 1 << zoom * TILE_SIZE;
     auto meterX = pixelX * resolution(zoom) - ORIGIN_SHIFT;
     auto meterY = pixelY * resolution(zoom) - ORIGIN_SHIFT;
     auto [x, y] = signMeters(meterX, meterY, pixelX, pixelY, zoom);
@@ -25,11 +27,11 @@ Point Point::fromLatLon(double latitude, double longitude)
     return Point{latitude, longitude};
 }
 
-std::tuple<int, int> Point::signMeters(double meterX, double meterY, int pixelX, int pixelY, int zoom)
+std::tuple<int, int> Point::signMeters(double meterX, double meterY, int pixelX, int pixelY, unsigned int zoom)
 {
-    auto halfSize = static_cast<int>((TILE_SIZE * std::pow(2, zoom)) / 2);
-    meterX = abs(meterX);
-    meterY = abs(meterY);
+    auto halfSize = TILE_SIZE * (1 << zoom) / 2;
+    meterX = std::abs(meterX);
+    meterY = std::abs(meterY);
     if (pixelX < halfSize)
     {
         meterX *= -1;
@@ -59,17 +61,14 @@ std::tuple<double, double> Point::getLatLon()
 std::tuple<double, double> Point::getMeters()
 {
     auto meterX = longitude_ * ORIGIN_SHIFT / 180.0;
-    auto meterY = log(tan((90.0 + latitude_) * M_PI / 360.0)) / (M_PI / 180.0);
-    meterY = meterY * ORIGIN_SHIFT / 180.0;
-    return {meterX, meterY};
+    auto meterY = std::log(std::tan((90.0 + latitude_) * M_PI / 360.0)) / (M_PI / 180.0);
+    return {meterX, meterY * ORIGIN_SHIFT / 180.0};
 }
 
-std::tuple<int, int> Point::getPixels(int zoom)
+std::tuple<int, int> Point::getPixels(unsigned int zoom)
 {
-    auto meters = getMeters();
-    auto meterX = std::get<0>(meters);
-    auto meterY = std::get<1>(meters);
+    auto [meterX, meterY] = getMeters();
     auto pixelX = (meterX + ORIGIN_SHIFT) / resolution(zoom);
     auto pixelY = (meterY - ORIGIN_SHIFT) / resolution(zoom);
-    return {abs(round(pixelX)), abs(round(pixelY))};
+    return {std::abs(std::round(pixelX)), std::abs(std::round(pixelY))};
 }

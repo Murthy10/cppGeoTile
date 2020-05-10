@@ -16,6 +16,9 @@ if ("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
   SET(CMAKE_INTERPROCEDURAL_OPTIMIZATION OFF)
 endif()
 
+set(cppGeoTile_VERSION_MAJOR 1)
+set(cppGeoTile_VERSION_MINOR 0)
+
 configure_file(cppGeoTileConfig.h.in cppGeoTileConfig.h)
 
 add_subdirectory(libs/libGeoTile)

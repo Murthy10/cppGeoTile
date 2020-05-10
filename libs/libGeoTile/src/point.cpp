@@ -1,5 +1,5 @@
-#include "point.hpp"
-#include "meta.hpp"
+#include "GeoTile/point.hpp"
+#include "GeoTile/meta.hpp"
 
 #include <cmath>
 
@@ -7,7 +7,6 @@ Point::Point(double latitude, double longitude) : latitude_(latitude), longitude
 
 Point Point::fromPixel(int pixelX, int pixelY, unsigned int zoom)
 {
-    // unused: auto maxPixel = 1 << zoom * TILE_SIZE;
     auto meterX = pixelX * resolution(zoom) - ORIGIN_SHIFT;
     auto meterY = pixelY * resolution(zoom) - ORIGIN_SHIFT;
     auto [x, y] = signMeters(meterX, meterY, pixelX, pixelY, zoom);

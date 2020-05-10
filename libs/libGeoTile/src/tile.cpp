@@ -1,6 +1,6 @@
-#include "tile.hpp"
-#include "meta.hpp"
-#include "point.hpp"
+#include "GeoTile/tile.hpp"
+#include "GeoTile/meta.hpp"
+#include "GeoTile/point.hpp"
 
 #include <algorithm>
 #include <sstream>
@@ -28,11 +28,6 @@ Tile Tile::fromQuadTree(std::string quadTree)
         googleX = (googleX << 1) | remainder;
         googleY = (googleY << 1) | quotient;
     }
-
-    // not allowed (C99 extension):
-    // char quadTreeChars[quadTree.size()];
-    // whats the use of this?
-    // quadTree.copy(quadTreeChars, quadTree.size());
 
     int tmsY = offset - googleY;
     return Tile::fromTms(googleX, tmsY, zoom);

@@ -1,5 +1,5 @@
-#include "point.hpp"
-#include "tile.hpp"
+#include "GeoTile/point.hpp"
+#include "GeoTile/tile.hpp"
 
 #include <iostream>
 

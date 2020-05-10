@@ -21,9 +21,9 @@ if ("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
 endif()
 
 set(HEADERS
-  "include/meta.hpp"
-  "include/point.hpp"
-  "include/tile.hpp"
+  "include/GeoTile/meta.hpp"
+  "include/GeoTile/point.hpp"
+  "include/GeoTile/tile.hpp"
 )
 
 set(SOURCES

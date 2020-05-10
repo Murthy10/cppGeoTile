@@ -1,7 +1,10 @@
+#include "GeoTile/tile.hpp"
+#include "GeoTile/point.hpp"
+
 #include <gtest/gtest.h>
 
-#include "tile.hpp"
-#include "point.hpp"
+#include <tuple>
+#include <string>
 
 int zoom()
 {

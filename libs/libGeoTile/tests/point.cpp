@@ -1,6 +1,8 @@
+#include "GeoTile/point.hpp"
+
 #include <gtest/gtest.h>
 
-#include "point.hpp"
+#include <tuple>
 
 std::tuple<double, double> getChicagoMeters()
 {
@@ -28,19 +30,15 @@ TEST(point, fromLatLon)
 
 TEST(point, fromMeters)
 {
-    auto latLon = getChicagoLatLon();
-    auto lat = std::get<0>(latLon);
-    auto lon = std::get<1>(latLon);
+    auto [lat, lon] = getChicagoLatLon();
 
-    auto meters = getChicagoMeters();
-    auto meterX = std::get<0>(meters);
-    auto meterY = std::get<1>(meters);
+    auto [meterX, meterY] = getChicagoMeters();
 
     auto point = Point::fromMeters(meterX, meterY);
-    auto resultingMeters = point.getMeters();
+    auto [resultX, resultY] = point.getMeters();
 
-    ASSERT_NEAR(std::get<0>(resultingMeters), meterX, 0.1);
-    ASSERT_NEAR(std::get<1>(resultingMeters), meterY, 0.1);
+    ASSERT_NEAR(resultX, meterX, 0.1);
+    ASSERT_NEAR(resultY, meterY, 0.1);
 
     ASSERT_NEAR(point.getLatitude(), lat, 0.1);
     ASSERT_NEAR(point.getLongitude(), lon, 0.1);
@@ -48,20 +46,16 @@ TEST(point, fromMeters)
 
 TEST(point, fromPixel)
 {
-    auto latLon = getChicagoLatLon();
-    auto lat = std::get<0>(latLon);
-    auto lon = std::get<1>(latLon);
+    auto [lat, lon] = getChicagoLatLon();
 
     auto zoom = 19;
-    auto pixel = getChicagoPixel();
-    auto pixelX = std::get<0>(pixel);
-    auto pixelY = std::get<1>(pixel);
+    auto [pixelX, pixelY] = getChicagoPixel();
 
     auto point = Point::fromPixel(pixelX, pixelY, zoom);
-    auto resultingPixel = point.getPixels(zoom);
+    auto [resultX, resultY] = point.getPixels(zoom);
 
-    ASSERT_NEAR(std::get<0>(resultingPixel), pixelX, 5);
-    ASSERT_NEAR(std::get<1>(resultingPixel), pixelY, 5);
+    ASSERT_NEAR(resultX, pixelX, 5);
+    ASSERT_NEAR(resultY, pixelY, 5);
 
     ASSERT_NEAR(point.getLatitude(), lat, 0.1);
     ASSERT_NEAR(point.getLongitude(), lon, 0.1);
@@ -74,39 +68,33 @@ TEST(point, pixelToMeters)
     auto meterY = std::get<1>(meters);
 
     auto zoom = 19;
-    auto pixel = getChicagoPixel();
-    auto pixelX = std::get<0>(pixel);
-    auto pixelY = std::get<1>(pixel);
+    auto [pixelX, pixelY] = getChicagoPixel();
 
     auto point = Point::fromPixel(pixelX, pixelY, zoom);
-    auto resultingMeters = point.getMeters();
+    auto [resultMeterX, resultMeterY] = point.getMeters();
 
-    ASSERT_NEAR(std::get<0>(resultingMeters), meterX, 20);
-    ASSERT_NEAR(std::get<1>(resultingMeters), meterY, 20);
+    ASSERT_NEAR(resultMeterX, meterX, 20);
+    ASSERT_NEAR(resultMeterY, meterY, 20);
 
-    auto resultingPixel = point.getPixels(zoom);
-    ASSERT_NEAR(std::get<0>(resultingPixel), pixelX, 5);
-    ASSERT_NEAR(std::get<1>(resultingPixel), pixelY, 5);
+    auto [resultPixelX, resultPixelY] = point.getPixels(zoom);
+    ASSERT_NEAR(resultPixelX, pixelX, 5);
+    ASSERT_NEAR(resultPixelY, pixelY, 5);
 }
 
 TEST(point, metersToPixel)
 {
-    auto meters = getChicagoMeters();
-    auto meterX = std::get<0>(meters);
-    auto meterY = std::get<1>(meters);
+    auto [meterX, meterY] = getChicagoMeters();
 
     auto zoom = 19;
-    auto pixel = getChicagoPixel();
-    auto pixelX = std::get<0>(pixel);
-    auto pixelY = std::get<1>(pixel);
+    auto [pixelX, pixelY] = getChicagoPixel();
 
     auto point = Point::fromMeters(meterX, meterY);
-    auto resultingMeters = point.getMeters();
+    auto [resultMeterX, resultMeterY] = point.getMeters();
 
-    ASSERT_NEAR(std::get<0>(resultingMeters), meterX, 100);
-    ASSERT_NEAR(std::get<1>(resultingMeters), meterY, 100);
+    ASSERT_NEAR(resultMeterX, meterX, 100);
+    ASSERT_NEAR(resultMeterY, meterY, 100);
 
-    auto resultingPixel = point.getPixels(zoom);
-    ASSERT_NEAR(std::get<0>(resultingPixel), pixelX, 100);
-    ASSERT_NEAR(std::get<1>(resultingPixel), pixelY, 100);
+    auto [resultPixelX, resultPixelY] = point.getPixels(zoom);
+    ASSERT_NEAR(resultPixelX, pixelX, 100);
+    ASSERT_NEAR(resultPixelY, pixelY, 100);
 }

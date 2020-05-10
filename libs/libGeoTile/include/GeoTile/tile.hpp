@@ -3,6 +3,9 @@
 
 #include "point.hpp"
 
+#include <tuple>
+#include <string>
+
 struct Tile
 {
     static Tile fromMeters(double meterX, double meterY);

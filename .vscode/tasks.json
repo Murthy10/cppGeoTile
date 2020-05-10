@@ -3,22 +3,64 @@
 	"tasks": [
 		{
 			"type": "shell",
-			"label": "C/C++: g++ build active file",
-			"command": "/usr/bin/g++",
+			"label": "CMake Debug Config",
+			"command": "cmake",
 			"args": [
-				"-g",
-				"${workspaceFolder}/src/*.cpp",
-				"-o",
-				"${workspaceFolder}/build/${fileBasenameNoExtension}"
+				"-S",
+				"${workspaceFolder}",
+				"-B",
+				"${workspaceFolder}/build/"
+			]
+		},
+		{
+			"type": "shell",
+			"label": "CMake Debug Build",
+			"dependsOn": "CMake Debug Config",
+			"command": "cmake",
+			"args": [
+				"--build",
+				"${workspaceFolder}/build",
 			],
-			"options": {
-				"cwd": "/usr/bin"
-			},
-			"problemMatcher": [
-				"$gcc"
+		},
+		{
+			"type": "shell",
+			"label": "GeoTile Debug Tests",
+			"dependsOn": "CMake Debug Build",
+			"command": "${workspaceFolder}/build/tests/GeoTileTest",
+		},
+		{
+			"type": "shell",
+			"label": "CMake Release Config",
+			"command": "cmake",
+			"args": [
+				"-S",
+				"${workspaceFolder}",
+				"-B",
+				"${workspaceFolder}/build/",
+				"-DCMAKE_BUILD_TYPE=Release"
+			]
+		},
+		{
+			"type": "shell",
+			"label": "CMake Release Build",
+			"dependsOn": "CMake Release Config",
+			"command": "cmake",
+			"args": [
+				"--build",
+				"${workspaceFolder}/build",
 			],
 			"group": {
 				"kind": "build",
+				"isDefault": true
+			}
+		},
+		{
+			"type": "shell",
+			"label": "GeoTile Release Tests",
+			"dependsOn": "CMake Release Build",
+			"command": "${workspaceFolder}/build/tests/GeoTileTest",
+			"group": {
+				"kind": "test",
 				"isDefault": true
 			}
 		}

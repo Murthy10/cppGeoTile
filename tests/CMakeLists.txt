@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.12)
-project(GeoTile LANGUAGES CXX)
+project(GeoTileTest LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_EXTENSIONS OFF)
@@ -12,38 +12,32 @@ if (NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE "Debug")
 endif()
 
-option(ENABLE_GEOTILETESTS "Builds the GeoTile GoogleTest suite." ON)
-
 if ("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
   SET(CMAKE_INTERPROCEDURAL_OPTIMIZATION OFF)
 endif()
 
-set(
-  HEADERS
-  "include/GeoTile/meta.hpp"
-  "include/GeoTile/point.hpp"
-  "include/GeoTile/tile.hpp"
-)
+set(BUILD_GMOCK OFF CACHE INTERNAL "")
+set(INSTALL_GTEST OFF CACHE INTERNAL "")
+
+add_subdirectory("thirdparty/googletest")
 
 set(
   SOURCES
+  "src/main.cpp"
   "src/point.cpp"
   "src/tile.cpp"
 )
 
-add_library(
+add_executable(
   "${PROJECT_NAME}"
-  SHARED
   "${SOURCES}"
-  "${HEADERS}"
 )
 
-target_include_directories(${PROJECT_NAME}
-  PUBLIC
-    $<INSTALL_INTERFACE:include>
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-  PRIVATE
-    ${CMAKE_CURRENT_SOURCE_DIR}
+target_link_libraries(
+    "${PROJECT_NAME}"
+    PRIVATE
+    "GeoTile"
+    "gtest"
 )
 
 target_compile_options(
@@ -56,7 +50,3 @@ target_compile_options(
     -pedantic-errors
   >
 )
-
-if (ENABLE_GEOTILETESTS)
-  add_subdirectory("tests")
-endif()

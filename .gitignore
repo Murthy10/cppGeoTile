@@ -32,4 +32,12 @@
 *.app
 
 build/
-libs/libGeoTile/build/
+
+# Temporary files.
+*~
+*.swp
+
+# Folder metadata
+.DS_Store
+[Dd]esktop.ini
+

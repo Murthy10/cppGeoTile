@@ -4,16 +4,17 @@
 
 #include <algorithm>
 #include <sstream>
+#include <iterator>
 #include <vector>
 
-Tile::Tile(int tmsX, int tmsY, unsigned int zoom) : tmsX_(tmsX), tmsY_(tmsY), zoom_(zoom){};
+Tile::Tile(int tmsX, int tmsY, unsigned int zoom) : tmsX_(tmsX), tmsY_(tmsY), zoom_(zoom) {}
 
 Tile Tile::fromQuadTree(std::string quadTree)
 {
     int zoom = quadTree.size();
     auto offset = (1 << zoom) - 1;
 
-    std::vector<int> digits;
+    std::vector<int> digits{};
     std::for_each(quadTree.begin(), quadTree.end(), [&digits](char c) {
         int digit = c - '0';
         digits.push_back(digit);
@@ -35,7 +36,7 @@ Tile Tile::fromQuadTree(std::string quadTree)
 
 Tile Tile::fromTms(int tmsX, int tmsY, unsigned int zoom)
 {
-    return Tile{tmsX, tmsY, zoom};
+    return {tmsX, tmsY, zoom};
 }
 
 Tile Tile::fromGoogle(int googleX, int googleY, unsigned int zoom)
@@ -86,7 +87,7 @@ std::string Tile::getQuadTree()
 {
     int tmsX = tmsX_;
     int tmsY = (1 << (zoom_ - 1)) - tmsY_;
-    std::vector<int> digits;
+    std::vector<int> digits{};
     for (int i = zoom_; i > 0; i--)
     {
         int digit = 0;
@@ -105,7 +106,7 @@ std::string Tile::getQuadTree()
         }
         digits.push_back(digit);
     }
-    std::stringstream strStream;
+    std::stringstream strStream{};
     std::copy(digits.begin(), digits.end(), std::ostream_iterator<int>(strStream, ""));
     return strStream.str();
 }

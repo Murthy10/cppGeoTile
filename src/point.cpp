@@ -3,7 +3,7 @@
 
 #include <cmath>
 
-Point::Point(double latitude, double longitude) : latitude_(latitude), longitude_(longitude){};
+Point::Point(double latitude, double longitude) : latitude_(latitude), longitude_(longitude) {}
 
 Point Point::fromPixel(int pixelX, int pixelY, unsigned int zoom)
 {
@@ -18,7 +18,7 @@ Point Point::fromMeters(double meterX, double meterY)
     auto longitude = (meterX / ORIGIN_SHIFT) * 180.0;
     auto latitude = (meterY / ORIGIN_SHIFT) * 180.0;
     latitude = 180.0 / M_PI * (2 * atan(exp(latitude * M_PI / 180.0)) - M_PI / 2.0);
-    return Point(latitude, longitude);
+    return {latitude, longitude};
 }
 
 Point Point::fromLatLon(double latitude, double longitude)

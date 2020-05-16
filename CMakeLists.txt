@@ -45,23 +45,21 @@ set_target_properties("${PROJECT_NAME}" PROPERTIES
 if (ENABLE_GEOTILETESTS)
   enable_testing()
 
-  set(BUILD_GMOCK OFF CACHE INTERNAL "")
-  set(INSTALL_GTEST OFF CACHE INTERNAL "")
+  set(TEST_PROJECT_NAME "${PROJECT_NAME}_tests")
+  set(GTEST_PROJECT_LIB "gtest")
 
-  add_subdirectory("tests/thirdparty/googletest")
-
-  add_executable("${PROJECT_NAME}_tests"
+  add_executable("${TEST_PROJECT_NAME}"
     "tests/src/main.cpp"
     "tests/src/point.cpp"
     "tests/src/tile.cpp"
   )
 
-  target_link_libraries("${PROJECT_NAME}_tests" PRIVATE
+  target_link_libraries("${TEST_PROJECT_NAME}" PRIVATE
       "${PROJECT_NAME}"
-      "gtest"
+      "${GTEST_PROJECT_LIB}"
   )
 
-  target_compile_options("${PROJECT_NAME}_tests" PRIVATE
+  target_compile_options("${TEST_PROJECT_NAME}" PRIVATE
     $<$<OR:$<CXX_COMPILER_ID:Clang>,$<CXX_COMPILER_ID:AppleClang>,$<CXX_COMPILER_ID:GNU>>:
       -Wall
       -Wextra
@@ -70,5 +68,32 @@ if (ENABLE_GEOTILETESTS)
     >
   )
 
-  gtest_discover_tests("${PROJECT_NAME}_tests")
+  target_compile_features("${TEST_PROJECT_NAME}" PUBLIC
+    "cxx_std_17"
+  )
+
+  set_target_properties("${TEST_PROJECT_NAME}" PROPERTIES
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+    INTERPROCEDURAL_OPTIMIZATION ON
+    INTERPROCEDURAL_OPTIMIZATION_DEBUG OFF
+  )
+
+  set(BUILD_GMOCK OFF CACHE INTERNAL "")
+  set(INSTALL_GTEST OFF CACHE INTERNAL "")
+
+  add_subdirectory("tests/thirdparty/googletest")
+
+  target_compile_features("${GTEST_PROJECT_LIB}" PUBLIC
+    "cxx_std_17"
+  )
+
+  set_target_properties("${GTEST_PROJECT_LIB}" PROPERTIES
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+    INTERPROCEDURAL_OPTIMIZATION ON
+    INTERPROCEDURAL_OPTIMIZATION_DEBUG OFF
+  )
+
+  gtest_discover_tests("${TEST_PROJECT_NAME}")
 endif()

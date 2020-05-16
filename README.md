@@ -55,8 +55,21 @@ int main(int argc, char **argv)
 }
 ```
 
-## Installation
-Configure: `cmake -S . -B build`
+## Building the Library
+
+*Note*: all commands shown here are expected to be run in the source root of the library.
+
+To configure the build environment, use either:
+```
+$ cmake -S . -B build
+```
+if you are using cmake >= 3.13, or:
+```
+$ mkdir build
+$ cd build
+$ cmake ..
+```
+if you are using cmake <= 3.12
 
 Additional configuration options:
 
@@ -65,7 +78,9 @@ Additional configuration options:
 
 Build: `cmake --build build`
 
-Run tests: `./build/tests/GeoTileTest`
+Run tests: `cmake --build build --target test`
+
+*Note*: Due to the idiosyncratic separation of 'test execution' from 'building' in CMake, you will have to run the library build before you can run the tests.
 
 ## Notes
 

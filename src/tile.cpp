@@ -4,7 +4,10 @@
 
 #include <algorithm>
 #include <sstream>
+#include <iterator>
+#include <numeric>
 #include <vector>
+#include <utility>
 
 Tile::Tile(int tmsX, int tmsY, unsigned int zoom) : tmsX_(tmsX), tmsY_(tmsY), zoom_(zoom){};
 
@@ -13,21 +16,16 @@ Tile Tile::fromQuadTree(std::string quadTree)
     int zoom = quadTree.size();
     auto offset = (1 << zoom) - 1;
 
-    std::vector<int> digits;
-    std::for_each(quadTree.begin(), quadTree.end(), [&digits](char c) {
-        int digit = c - '0';
-        digits.push_back(digit);
+    std::vector<int> digits{};
+    transform(cbegin(quadTree), cend(quadTree), back_inserter(digits), [](auto c) {
+        return c - '0';
     });
 
-    int googleX = 0;
-    int googleY = 0;
-    for (auto digit : digits)
-    {
-        int quotient = digit / 2;
-        int remainder = digit % 2;
-        googleX = (googleX << 1) | remainder;
-        googleY = (googleY << 1) | quotient;
-    }
+    auto [googleX, googleY] = accumulate(cbegin(digits), cend(digits), std::pair{0, 0}, [](auto acc, auto digit) {
+        auto quotient = digit / 2;
+        auto remainder = digit % 2;
+        return std::pair{(acc.first << 1) | remainder, (acc.second << 1) | quotient};
+    });
 
     int tmsY = offset - googleY;
     return Tile::fromTms(googleX, tmsY, zoom);
@@ -86,11 +84,11 @@ std::string Tile::getQuadTree()
 {
     int tmsX = tmsX_;
     int tmsY = (1 << (zoom_ - 1)) - tmsY_;
-    std::vector<int> digits;
-    for (int i = zoom_; i > 0; i--)
-    {
-        int digit = 0;
-        auto maks = 1 << (i - 1);
+
+    std::stringstream strStream;
+    generate_n(std::ostream_iterator<int>{strStream}, zoom_, [&, i = zoom_]() mutable {
+        auto digit = 0;
+        auto maks = 1 << (i -= 1);
         if ((tmsX & maks) != 0)
         {
             digit += 1;
@@ -103,10 +101,8 @@ std::string Tile::getQuadTree()
         {
             digit %= 2;
         }
-        digits.push_back(digit);
-    }
-    std::stringstream strStream;
-    std::copy(digits.begin(), digits.end(), std::ostream_iterator<int>(strStream, ""));
+        return digit;
+    });
     return strStream.str();
 }
 

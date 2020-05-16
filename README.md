@@ -12,11 +12,11 @@ As already mentioned they allow you to convert various geo projections.
 Example of the class Point.
 
 ```cpp
-#include <iostream>
-
 #include <GeoTile/point.hpp>
 
-int main(int argc, char **argv)
+#include <iostream>
+
+int main()
 {
     // meters in Spherical Mercator EPSG:900913
     auto zoom = 19;
@@ -38,11 +38,11 @@ int main(int argc, char **argv)
 Example of the class Tile.
 
 ```cpp
-#include <iostream>
-
 #include <GeoTile/tile.hpp>
 
-int main(int argc, char **argv)
+#include <iostream>
+
+int main()
 {
     auto zoom = 19;
     auto tmsX = 134494;

@@ -9,7 +9,7 @@
 #include <vector>
 #include <utility>
 
-Tile::Tile(int tmsX, int tmsY, unsigned int zoom) : tmsX_(tmsX), tmsY_(tmsY), zoom_(zoom){};
+Tile::Tile(int tmsX, int tmsY, unsigned int zoom) : tmsX_(tmsX), tmsY_(tmsY), zoom_(zoom) {}
 
 Tile Tile::fromQuadTree(std::string quadTree)
 {
@@ -33,7 +33,7 @@ Tile Tile::fromQuadTree(std::string quadTree)
 
 Tile Tile::fromTms(int tmsX, int tmsY, unsigned int zoom)
 {
-    return Tile{tmsX, tmsY, zoom};
+    return {tmsX, tmsY, zoom};
 }
 
 Tile Tile::fromGoogle(int googleX, int googleY, unsigned int zoom)

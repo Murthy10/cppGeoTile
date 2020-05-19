@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION "3.12")
 project("GeoTile"
   LANGUAGES CXX
   VERSION "1.0.0"
+  HOMEPAGE_URL "https://github.com/Murthy10/cppGeoTile"
+  DESCRIPTION "C++ library to handle tiles and points of different projections, in particular WGS 84 (Latitude, Longitude), Spherical Mercator (Meters), Pixel Pyramid and Tiles (TMS, Google, QuadTree)"
 )
 
 if (NOT CMAKE_BUILD_TYPE)

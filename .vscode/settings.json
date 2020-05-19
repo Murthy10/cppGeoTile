@@ -41,5 +41,8 @@
         "typeinfo": "cpp",
         "list": "cpp",
         "iterator": "cpp"
-    }
+    },
+    "cmake.configureArgs": [
+        "-DENABLE_GEOTILETESTS=YES"
+    ]
 }

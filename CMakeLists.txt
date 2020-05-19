@@ -1,5 +1,8 @@
 cmake_minimum_required(VERSION "3.12")
-project("GeoTile" LANGUAGES CXX)
+project("GeoTile"
+  LANGUAGES CXX
+  VERSION "1.0.0"
+)
 
 if (NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE "Debug")
@@ -9,12 +12,16 @@ option(ENABLE_GEOTILETESTS "Builds the GeoTile GoogleTest suite." NO)
 
 ### Main Library
 
-add_library("${PROJECT_NAME}"
-  "src/point.cpp"
-  "src/tile.cpp"
+set("${PROJECT_NAME}_HEADERS"
   "include/GeoTile/meta.hpp"
   "include/GeoTile/point.hpp"
   "include/GeoTile/tile.hpp"
+)
+
+add_library("${PROJECT_NAME}"
+  "src/point.cpp"
+  "src/tile.cpp"
+  ${${PROJECT_NAME}_HEADERS}
 )
 
 target_include_directories("${PROJECT_NAME}" PUBLIC
@@ -40,6 +47,36 @@ set_target_properties("${PROJECT_NAME}" PROPERTIES
   CXX_EXTENSIONS OFF
   INTERPROCEDURAL_OPTIMIZATION ON
   INTERPROCEDURAL_OPTIMIZATION_DEBUG OFF
+  PUBLIC_HEADER "${${PROJECT_NAME}_HEADERS}"
+)
+
+include("CMakePackageConfigHelpers")
+
+install(TARGETS "${PROJECT_NAME}"
+  EXPORT "${PROJECT_NAME}Targets"
+  PUBLIC_HEADER DESTINATION "include/GeoTile"
+)
+
+write_basic_package_version_file(
+    "${PROJECT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake"
+    COMPATIBILITY "AnyNewerVersion"
+)
+
+configure_package_config_file(
+    "${PROJECT_SOURCE_DIR}/cmake/config.cmake.in"
+    "${PROJECT_BINARY_DIR}/${PROJECT_NAME}Config.cmake"
+    INSTALL_DESTINATION "lib/cmake/${PROJECT_NAME}"
+)
+
+install(FILES
+  "${PROJECT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake"
+  "${PROJECT_BINARY_DIR}/${PROJECT_NAME}Config.cmake"
+  DESTINATION "lib/cmake/${PROJECT_NAME}"
+)
+
+install(EXPORT "${PROJECT_NAME}Targets"
+  DESTINATION "lib/cmake/${PROJECT_NAME}"
+  NAMESPACE "${PROJECT_NAME}::"
 )
 
 ### Unit Tests

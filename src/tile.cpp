@@ -44,8 +44,8 @@ Tile Tile::fromGoogle(int googleX, int googleY, unsigned int zoom)
 
 Tile Tile::forPixels(int pixelX, int pixelY, unsigned int zoom)
 {
-    auto tmsX = static_cast<int>(std::ceil(pixelX / TILE_SIZE) - 1);
-    auto tmsY = static_cast<int>(std::ceil(pixelY / TILE_SIZE) - 1);
+    auto tmsX = static_cast<int>(std::ceil(pixelX / float(TILE_SIZE)) - 1);
+    auto tmsY = static_cast<int>(std::ceil(pixelY / float(TILE_SIZE)) - 1);
     tmsY = (1 << zoom) - 1 - tmsY;
     return Tile::fromTms(tmsX, tmsY, zoom);
 }
@@ -83,12 +83,13 @@ std::tuple<int, int> Tile::getGoogle()
 std::string Tile::getQuadTree()
 {
     int tmsX = tmsX_;
-    int tmsY = (1 << (zoom_ - 1)) - tmsY_;
+    int tmsY = (1 << zoom_) - 1 - tmsY_;
 
     std::stringstream strStream;
-    generate_n(std::ostream_iterator<int>{strStream}, zoom_, [&, i = zoom_]() mutable {
+   
+    for(int i = zoom_; i > 0; i--){
         auto digit = 0;
-        auto maks = 1 << (i -= 1);
+        auto maks = 1 << (i - 1);
         if ((tmsX & maks) != 0)
         {
             digit += 1;
@@ -97,12 +98,8 @@ std::string Tile::getQuadTree()
         {
             digit += 2;
         }
-        if (digit > 2)
-        {
-            digit %= 2;
-        }
-        return digit;
-    });
+        strStream << digit;
+    }
     return strStream.str();
 }
 

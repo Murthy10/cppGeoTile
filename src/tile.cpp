@@ -44,8 +44,8 @@ Tile Tile::fromGoogle(int googleX, int googleY, unsigned int zoom)
 
 Tile Tile::forPixels(int pixelX, int pixelY, unsigned int zoom)
 {
-    auto tmsX = static_cast<int>(std::ceil(pixelX / float(TILE_SIZE)) - 1);
-    auto tmsY = static_cast<int>(std::ceil(pixelY / float(TILE_SIZE)) - 1);
+    auto tmsX = static_cast<int>(std::ceil(pixelX / static_cast<double>(TILE_SIZE)) - 1);
+    auto tmsY = static_cast<int>(std::ceil(pixelY / static_cast<double>(TILE_SIZE)) - 1);
     tmsY = (1 << zoom) - 1 - tmsY;
     return Tile::fromTms(tmsX, tmsY, zoom);
 }

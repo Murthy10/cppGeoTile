@@ -111,6 +111,16 @@ std::string chicagoQuadTree()
     return "0302222310303211330";
 }
 
+std::string mantovaQuadTree()
+{
+    return "120221333233121120";
+}
+
+std::string roveretoQuadTree()
+{
+    return "120221331123023232";
+}
+
 TEST(tile, forPixel)
 {
     auto [pixelX, pixelY] = chicagoPixel();
@@ -182,4 +192,23 @@ TEST(tile, bounds)
     ASSERT_NEAR(resultingMinY, pixelMinBoundY, 2);
     ASSERT_NEAR(resultingMaxX, pixelMaxBoundX, 2);
     ASSERT_NEAR(resultingMaxY, pixelMaxBoundY, 2);
+}
+
+TEST(tile, fromLatLonToQuadKey)
+{
+    auto zoom = 18;
+    auto lat = 45.1336;
+    auto lon = 10.8714;
+
+    auto tile = Tile::forLatLon(lat,lon,zoom);
+    auto quadkey = tile.getQuadTree();
+
+    ASSERT_EQ(quadkey,mantovaQuadTree());
+
+    lat = 45.8595;
+    lon = 11.0004;
+    tile = Tile::forLatLon(lat,lon,zoom);
+    quadkey = tile.getQuadTree();
+
+    ASSERT_EQ(quadkey,roveretoQuadTree());
 }

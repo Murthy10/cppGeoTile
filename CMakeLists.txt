@@ -10,7 +10,7 @@ if (NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE "Debug")
 endif()
 
-option(ENABLE_GEOTILETESTS "Builds the GeoTile GoogleTest suite." NO)
+option(ENABLE_GEOTILETESTS "Builds the GeoTile GoogleTest suite." OFF)
 
 ### Main Library
 
